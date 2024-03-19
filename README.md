@@ -1,28 +1,27 @@
 # zsh-set-proxy
-Set a proxy and wrap with proxychains
+
+Configures [proxychains](https://github.com/rofl0r/proxychains-ng) in your shell.
 
 ## Usage
 
-```bash
-set-proxy [socks4|socks5] [host] PORT
+Set a proxy.
+Protocol defaults to `socks5`, host to `127.0.0.1`.
+
+``` bash
+set-proxy [http|socks4|socks5] [HOST] PORT
 ```
 
-Defaults:
-
-- socks5
-- 127.0.0.1
-
-Reset the proxy with:
+Reset the proxy.
 
 ```bash
 unset-proxy
 ```
 
-## Prompt 
+## Prompt Integration
 
-To add the current proxy to your right prompt elements in your Powerlevel10k configuration `~/.p10k.zsh`:
+To show the current proxy in the right element for your [Powerlevel10k](https://github.com/romkatv/powerlevel10k) prompt, add the following configuration to `~/.p10k.zsh`:
 
-```text
+``` bash
 typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
   [...]
   proxychains

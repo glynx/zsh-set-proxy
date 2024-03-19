@@ -20,8 +20,7 @@ set-proxy() {
             return 1
             ;;
     esac
-    export PROXYCHAINS_CONF_FILE="/tmp/proxychains-${protocol}-${host}-${port}.conf"
-    cat << EOF > "$PROXYCHAINS_CONF_FILE"
+    cat << EOF > "/tmp/proxychains-$$.conf"
 quiet_mode
 proxy_dns
 remote_dns_subnet 224
@@ -30,15 +29,14 @@ tcp_connect_time_out 1000
 [ProxyList]
 ${protocol} ${host} ${port}
 EOF
-    export LD_PRELOAD=/usr/lib/libproxychains4.so
-    declare -g PROXYCHAINS_ENDPOINT="${protocol}://${host}:${port}"
+    export LD_PRELOAD=/usr/lib/libproxychains4.so PROXYCHAINS_CONF_FILE="/tmp/proxychains-$$.conf" PROXYCHAINS_ENDPOINT="${protocol}://${host}:${port}" PROXYCHAINS_QUIET_MODE=1
 }
 
 unset-proxy() {
     if [[ "$PROXYCHAINS_CONF_FILE" == /tmp/proxychains-*.conf ]]; then
         rm -f "$PROXYCHAINS_CONF_FILE"
     fi
-    unset LD_PRELOAD PROXYCHAINS_CONF_FILE PROXYCHAINS_ENDPOINT
+    unset LD_PRELOAD PROXYCHAINS_CONF_FILE PROXYCHAINS_ENDPOINT PROXYCHAINS_QUIET_MODE
 }
 
 function prompt_proxychains() {
